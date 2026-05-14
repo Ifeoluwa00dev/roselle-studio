@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Helvetica Neue", "Arial", sans-serif;
+  --font-accent: "Georgia", serif;
+
+  --color-roselle-cream: #FAF8F4;
+  --color-roselle-green: #1A5C38;
+  --color-roselle-dark-green: #0f3d25;
+  --color-roselle-gold: #C9971C;
+  --color-roselle-black: #111111;
+  --color-roselle-near-black: #0a0a0a;
+  
+  --radius-pill: 9999px;
+}
+
+@layer base {
+  body {
+    @apply bg-roselle-cream text-roselle-black font-sans antialiased;
+    cursor: default;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight leading-tight;
+  }
+}
+
+.cormorant-italic {
+  font-family: var(--font-accent);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  content: "";
+  opacity: 0.05;
+  z-index: 9999;
+  pointer-events: none;
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+}
+
+.glass {
+  @apply backdrop-blur-xl bg-white/10 border-b border-white/10;
+}
+
+.glass-light {
+  @apply backdrop-blur-xl bg-white/40 border-b border-[#e5e7eb];
+}
+
+/* Custom Cursor styles */
+.custom-cursor {
+  @apply fixed pointer-events-none z-[10000] hidden md:block;
+}
+
+.marquee-container {
+  @apply overflow-hidden whitespace-nowrap py-6 flex;
+}
+
+.marquee-content {
+  @apply flex shrink-0;
+  animation: marquee 40s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.glow-radial {
+  background: radial-gradient(circle at center, rgba(26, 92, 56, 0.3) 0%, transparent 70%);
+}
+
+.gradient-border {
+  position: relative;
+  background: white;
+  background-clip: padding-box;
+  border: 1px solid transparent;
+}
+
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  background: linear-gradient(to bottom right, rgba(26, 92, 56, 0.2), transparent);
+  border-radius: inherit;
+}
+
+.gold-gradient {
+  background: linear-gradient(135deg, #C9971C 0%, #e8b832 100%);
+}
