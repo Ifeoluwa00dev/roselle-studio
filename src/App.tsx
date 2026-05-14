@@ -171,10 +171,7 @@ const Hero = () => {
             <span className="text-roselle-gold">✦</span>
             <span className="text-[11px] font-bold uppercase tracking-widest text-white/50">Live in 72 hours</span>
           </div>
-          <div className="flex items-center gap-3 bg-white/5 px-6 py-3 rounded-full border border-white/5">
-            <span className="text-roselle-gold">✦</span>
-            <span className="text-[11px] font-bold uppercase tracking-widest text-white/50">Built in Lagos</span>
-          </div>
+          
           <div className="flex items-center gap-3 bg-white/5 px-6 py-3 rounded-full border border-white/5">
             <span className="text-roselle-gold">✦</span>
             <span className="text-[11px] font-bold uppercase tracking-widest text-white/50">Ready for the world</span>
@@ -620,7 +617,7 @@ const Footer = () => {
               <span className="text-roselle-gold">STUDIO</span>
             </div>
             <p className="text-white/40 text-xl font-medium leading-relaxed mb-10">
-              Websites that mean business. Engineered in Lagos, ready for the world. Premium quality, delivered in days.
+              Websites that mean business. Ready for the world. Premium quality, delivered in days.
             </p>
             <div className="flex gap-6 mt-2">
               <a href="#" className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center hover:bg-roselle-gold hover:text-white transition-all"><Twitter size={24} /></a>
@@ -654,7 +651,7 @@ const Footer = () => {
             <a href="#" className="hover:text-white">Privacy</a>
             <a href="#" className="hover:text-white">Terms</a>
             <span className="w-1.5 h-1.5 bg-roselle-gold rounded-full" />
-            <p className="flex items-center gap-2">Built in Lagos. <span className="text-roselle-gold">🌺</span></p>
+            <p className="flex items-center gap-2"> <span className="text-roselle-gold">🌺</span></p>
           </div>
         </div>
       </div>
