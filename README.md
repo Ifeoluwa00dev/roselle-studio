@@ -1,20 +1,48 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Roselle Studio
 
-# Run and deploy your AI Studio app
+**Premium websites. Deployed in days.**
 
-This contains everything you need to run your app locally.
+Roselle Studio builds category-specific, ready-made websites for businesses that are serious about their online presence. No months of waiting. No bloated agency process. Just world-class results, fast.
 
-View your app in AI Studio: https://ai.studio/apps/860622be-2a7e-4dd6-b273-e60bb77fcdcc
+---
 
-## Run Locally
+## What We Do
 
-**Prerequisites:**  Node.js
+Most businesses need a great website — not a custom software project. Roselle Studio solves this with a library of premium, industry-specific website templates that are production-ready, fully customised to the client's brand, and deployed in days.
+
+**Who it's for:**
+- Restaurants, salons, clinics, law firms, hotels, retailers, and more
+- Businesses launching for the first time online
+- Businesses replacing outdated or underperforming websites
+
+---
+
+## How It Works
+
+1. **Pick your category** — browse templates built for your industry
+2. **Share your details** — logo, copy, brand colours, photos
+3. **We customise and deploy** — your site is live within days
+4. **Ongoing support** — updates, hosting, and maintenance available
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | React + TypeScript |
+| Styling | Tailwind CSS |
+| Hosting | Railway / Vercel |
+| CMS (client sites) | Configured per project |
+
+---
+
+## Getting Started
 
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+
+---
+
+## License
+
+MIT
