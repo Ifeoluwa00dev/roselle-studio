@@ -40,6 +40,7 @@ import { cn } from "@/src/lib/utils";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,42 +51,95 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav 
-      className={cn(
-        "fixed top-0 left-0 w-full z-[100] transition-all duration-500 px-6 py-6",
-        isScrolled ? "glass py-4" : "bg-transparent"
-      )}
-    >
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <div className="flex items-baseline space-x-1 font-display text-2xl font-bold tracking-tighter">
-          <span className={cn("transition-colors duration-500", isScrolled ? "text-roselle-green" : "text-white")}>ROSELLE</span>
-          <span className="text-roselle-gold">STUDIO</span>
-        </div>
-        
-        <div className={cn(
-          "hidden md:flex items-center gap-10 text-sm font-bold tracking-tight transition-colors duration-500",
-          isScrolled ? "text-roselle-black/80" : "text-white/80"
-        )}>
-          <a href="#build" className="hover:text-roselle-gold transition-colors">What We Build</a>
-          <a href="#live" className="hover:text-roselle-gold transition-colors">Our Work</a>
-          <a href="#how" className="hover:text-roselle-gold transition-colors">How It Works</a>
-          <a href="#contact" className="hover:text-roselle-gold transition-colors">Contact</a>
-        </div>
+    <>
+      <nav 
+        className={cn(
+          "fixed top-0 left-0 w-full z-[100] transition-all duration-500 px-6 py-6",
+          isScrolled ? "glass py-4" : "bg-transparent"
+        )}
+      >
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <div className="flex items-baseline space-x-1 font-display text-2xl font-bold tracking-tighter">
+            <span className={cn("transition-colors duration-500", isScrolled ? "text-roselle-green" : "text-white")}>ROSELLE</span>
+            <span className="text-roselle-gold">STUDIO</span>
+          </div>
+          
+          <div className={cn(
+            "hidden md:flex items-center gap-10 text-sm font-bold tracking-tight transition-colors duration-500",
+            isScrolled ? "text-roselle-black/80" : "text-white/80"
+          )}>
+            <a href="#build" className="hover:text-roselle-gold transition-colors">What We Build</a>
+            <a href="#live" className="hover:text-roselle-gold transition-colors">Our Work</a>
+            <a href="#how" className="hover:text-roselle-gold transition-colors">How It Works</a>
+            <a href="#contact" className="hover:text-roselle-gold transition-colors">Contact</a>
+          </div>
 
-        <motion.button 
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className={cn(
-            "px-6 py-3 rounded-pill text-sm font-bold shadow-lg transition-all duration-500",
-            isScrolled 
-              ? "bg-roselle-green text-white shadow-roselle-green/10" 
-              : "bg-white text-roselle-dark-green shadow-black/20"
-          )}
-        >
-          Get Started
-        </motion.button>
-      </div>
-    </nav>
+          <div className="flex items-center gap-4">
+            <motion.button 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={cn(
+                "hidden sm:flex px-6 py-3 rounded-pill text-sm font-bold shadow-lg transition-all duration-500",
+                isScrolled 
+                  ? "bg-roselle-green text-white shadow-roselle-green/10" 
+                  : "bg-white text-roselle-dark-green shadow-black/20"
+              )}
+            >
+              Get Started
+            </motion.button>
+
+            {/* Hamburger — mobile only */}
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="md:hidden flex flex-col gap-[5px] p-1"
+              aria-label="Toggle menu"
+            >
+              <span className={cn("block w-6 h-[2px] rounded transition-all duration-300", isScrolled || menuOpen ? "bg-roselle-dark-green" : "bg-white", menuOpen ? "rotate-45 translate-y-[7px]" : "")} />
+              <span className={cn("block w-6 h-[2px] rounded transition-all duration-300", isScrolled || menuOpen ? "bg-roselle-dark-green" : "bg-white", menuOpen ? "opacity-0" : "")} />
+              <span className={cn("block w-6 h-[2px] rounded transition-all duration-300", isScrolled || menuOpen ? "bg-roselle-dark-green" : "bg-white", menuOpen ? "-rotate-45 -translate-y-[7px]" : "")} />
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Mobile menu dropdown */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="fixed top-[70px] left-0 right-0 z-[99] bg-white/97 backdrop-blur-xl border-b border-gray-100 shadow-xl md:hidden"
+          >
+            <div className="flex flex-col px-6 py-6 gap-1">
+              {[
+                { href: "#build", label: "What We Build" },
+                { href: "#live", label: "Our Work" },
+                { href: "#how", label: "How It Works" },
+                { href: "#contact", label: "Contact" },
+              ].map(link => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="text-roselle-dark-green font-bold text-lg py-3 border-b border-gray-50 hover:text-roselle-gold transition-colors"
+                >
+                  {link.label}
+                </a>
+              ))}
+              <a
+                href="#contact"
+                onClick={() => setMenuOpen(false)}
+                className="mt-4 bg-roselle-green text-white text-center py-4 rounded-2xl font-bold text-base hover:bg-roselle-green/90 transition-colors"
+              >
+                Get Started
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
@@ -225,6 +279,10 @@ const CATEGORIES = [
 ];
 
 const WhatWeBuild = () => {
+  const [showAll, setShowAll] = useState(false);
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
+  const visibleCategories = isMobile && !showAll ? CATEGORIES.slice(0, 6) : CATEGORIES;
+
   return (
     <section id="build" className="py-32 px-6 max-w-7xl mx-auto">
       <div className="mb-20">
@@ -239,29 +297,47 @@ const WhatWeBuild = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-        {CATEGORIES.map((cat, i) => (
-          <motion.div 
-            key={cat.id}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.05 }}
-            whileHover={{ y: -5 }}
-            className="group gradient-border p-8 rounded-3xl border border-gray-100/50 hover:bg-roselle-green/[0.02] transition-all cursor-default"
-          >
-            <div className="w-14 h-14 bg-roselle-cream rounded-2xl flex items-center justify-center mb-6 group-hover:bg-roselle-green group-hover:text-white group-hover:scale-110 transition-all duration-500">
-              <cat.icon size={28} />
-            </div>
-            <h3 className="text-2xl font-bold mb-4 tracking-tight">{cat.name}</h3>
-            <p className="text-gray-500 text-base leading-relaxed">{cat.desc}</p>
-          </motion.div>
-        ))}
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-8">
+        {CATEGORIES.map((cat, i) => {
+          const isHidden = i >= 6 && !showAll;
+          return (
+            <motion.div 
+              key={cat.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.05 }}
+              whileHover={{ y: -5 }}
+              className={cn(
+                "group gradient-border p-5 sm:p-8 rounded-2xl sm:rounded-3xl border border-gray-100/50 hover:bg-roselle-green/[0.02] transition-all cursor-default",
+                isHidden ? "hidden sm:block" : "block"
+              )}
+            >
+              <div className="w-10 h-10 sm:w-14 sm:h-14 bg-roselle-cream rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 group-hover:bg-roselle-green group-hover:text-white group-hover:scale-110 transition-all duration-500">
+                <cat.icon size={20} className="sm:hidden" />
+                <cat.icon size={28} className="hidden sm:block" />
+              </div>
+              <h3 className="text-base sm:text-2xl font-bold mb-2 sm:mb-4 tracking-tight leading-tight">{cat.name}</h3>
+              <p className="text-gray-500 text-xs sm:text-base leading-relaxed hidden sm:block">{cat.desc}</p>
+            </motion.div>
+          );
+        })}
       </div>
 
-      <div className="mt-24 text-center">
-        <p className="text-xl text-gray-500">
-          Have something else in mind? <a href="#contact" className="text-roselle-green font-bold inline-flex items-center gap-2 hover:gap-4 transition-all">We build for any business type <ArrowRight size={22} className="text-roselle-gold" /></a>
+      {/* See All button — mobile only */}
+      <div className="mt-8 flex justify-center sm:hidden">
+        <button
+          onClick={() => setShowAll(!showAll)}
+          className="flex items-center gap-2 px-6 py-3 rounded-full border border-roselle-green/30 text-roselle-green font-bold text-sm transition-all hover:bg-roselle-green hover:text-white"
+        >
+          {showAll ? "Show Less" : `See All ${CATEGORIES.length} Categories`}
+          <ArrowRight size={16} className={cn("transition-transform", showAll ? "rotate-90" : "")} />
+        </button>
+      </div>
+
+      <div className="mt-16 sm:mt-24 text-center">
+        <p className="text-base sm:text-xl text-gray-500">
+          Have something else in mind? <a href="#contact" className="text-roselle-green font-bold inline-flex items-center gap-2 hover:gap-4 transition-all">We build for any business type <ArrowRight size={18} className="text-roselle-gold" /></a>
         </p>
       </div>
     </section>
@@ -305,7 +381,8 @@ const LiveProducts = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        {/* Mobile: horizontal scroll. Desktop: grid */}
+        <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide -mx-6 px-6 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-10 sm:overflow-visible sm:pb-0">
           {LIVE_PRODUCTS.map((prod, i) => (
             <motion.a 
               key={prod.name}
@@ -318,27 +395,30 @@ const LiveProducts = () => {
               transition={{ delay: i * 0.1 }}
               whileHover={{ y: -10 }}
               className={cn(
-                "group relative block p-10 rounded-[2.5rem] bg-gradient-to-br overflow-hidden shadow-2xl transition-all duration-500",
+                "group relative block p-8 sm:p-10 rounded-[2rem] sm:rounded-[2.5rem] bg-gradient-to-br overflow-hidden shadow-2xl transition-all duration-500 flex-shrink-0 w-[80vw] sm:w-auto snap-center",
                 prod.gradient
               )}
             >
-              {/* Shimmer Effect */}
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-10 transition-opacity" />
-              
-              <div className="relative z-10 flex flex-col h-full min-h-[320px]">
+              <div className="relative z-10 flex flex-col h-full min-h-[280px] sm:min-h-[320px]">
                 <div className="flex-1">
-                  <div className="inline-flex px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-[10px] uppercase font-bold tracking-widest text-white/80 mb-6 border border-white/5">
+                  <div className="inline-flex px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-[10px] uppercase font-bold tracking-widest text-white/80 mb-5 border border-white/5">
                     {prod.tag}
                   </div>
-                  <h3 className="text-white text-4xl font-display font-black tracking-tight mb-4 group-hover:text-roselle-gold transition-colors">{prod.name}</h3>
-                  <p className="text-white/60 text-lg leading-relaxed mb-8">{prod.desc}</p>
+                  <h3 className="text-white text-3xl sm:text-4xl font-display font-black tracking-tight mb-3 group-hover:text-roselle-gold transition-colors">{prod.name}</h3>
+                  <p className="text-white/60 text-base sm:text-lg leading-relaxed mb-6">{prod.desc}</p>
                 </div>
-                
-                <div className="flex items-center gap-2 text-white font-bold group-hover:gap-4 transition-all">
-                  Visit Live Site <ExternalLink size={20} className="text-roselle-gold" />
+                <div className="flex items-center gap-2 text-white font-bold group-hover:gap-4 transition-all text-sm sm:text-base">
+                  Visit Live Site <ExternalLink size={18} className="text-roselle-gold" />
                 </div>
               </div>
             </motion.a>
+          ))}
+        </div>
+        {/* Scroll indicator dots — mobile only */}
+        <div className="flex justify-center gap-2 mt-5 sm:hidden">
+          {LIVE_PRODUCTS.map((_, i) => (
+            <span key={i} className="w-1.5 h-1.5 rounded-full bg-white/20" />
           ))}
         </div>
       </div>
@@ -364,10 +444,13 @@ const HowItWorks = () => {
         </h2>
 
         <div className="relative">
-          {/* Connecting Line */}
+          {/* Horizontal connecting line — desktop only */}
           <div className="absolute top-8 left-0 w-full h-[1px] bg-white/10 hidden lg:block" />
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-16 lg:gap-12 relative z-10">
+          {/* Vertical timeline line — mobile only */}
+          <div className="absolute top-0 left-8 w-[1px] h-full bg-white/10 block sm:hidden" />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-16 lg:gap-12 relative z-10">
             {steps.map((step, i) => (
               <motion.div 
                 key={i}
@@ -375,13 +458,15 @@ const HowItWorks = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.2 }}
-                className="relative"
+                className="relative flex items-start gap-5 sm:block"
               >
-                <div className="w-16 h-16 bg-roselle-green rounded-full flex items-center justify-center text-white text-2xl font-display font-black mb-10 shadow-lg shadow-roselle-green/20 relative z-10 border-4 border-[#111111]">
+                <div className="w-16 h-16 flex-shrink-0 bg-roselle-green rounded-full flex items-center justify-center text-white text-xl sm:text-2xl font-display font-black sm:mb-10 shadow-lg shadow-roselle-green/20 relative z-10 border-4 border-[#111111]">
                   0{i + 1}
                 </div>
-                <h3 className="text-white text-3xl font-bold mb-6 tracking-tight">{step.title}</h3>
-                <p className="text-white/50 text-lg leading-relaxed font-medium">{step.desc}</p>
+                <div className="pt-3 sm:pt-0">
+                  <h3 className="text-white text-xl sm:text-3xl font-bold mb-2 sm:mb-6 tracking-tight">{step.title}</h3>
+                  <p className="text-white/50 text-sm sm:text-lg leading-relaxed font-medium">{step.desc}</p>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -456,12 +541,25 @@ const ContactForm = () => {
   return (
     <section id="contact" className="py-32 px-6 bg-[#111111] relative overflow-hidden">
       <div className="noise-overlay opacity-[0.03]" />
+
+      {/* Mobile context header — shown above form on small screens */}
+      <div className="lg:hidden max-w-7xl mx-auto mb-12 relative z-10">
+        <div className="w-12 h-1 bg-roselle-gold mb-6 rounded-full" />
+        <h2 className="text-white text-4xl font-bold mb-4 tracking-tighter leading-tight">
+          Your business deserves a better internet presence.<br />
+          <span className="text-roselle-gold">Let's build it.</span>
+        </h2>
+        <p className="text-white/50 text-base leading-relaxed">
+          No pricing walls. No long calls. We'll get back to you within 24 hours.
+        </p>
+      </div>
+
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-20 relative z-10">
         <motion.div 
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          className="flex-1"
+          className="flex-1 hidden lg:block"
         >
           <div className="w-12 h-1 bg-roselle-gold mb-8 rounded-full" />
           <h2 className="text-white text-5xl md:text-7xl font-bold mb-10 tracking-tighter">
@@ -607,51 +705,106 @@ const CTABanner = () => {
 };
 
 const Footer = () => {
-  return (
-    <footer className="bg-roselle-near-black text-roselle-cream pt-32 pb-16 px-6 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="flex flex-col md:flex-row justify-between gap-20 mb-32">
-          <div className="max-w-md">
-            <div className="flex items-baseline space-x-1 font-display text-4xl font-bold tracking-tighter mb-8">
-              <span className="text-white">ROSELLE</span>
-              <span className="text-roselle-gold">STUDIO</span>
-            </div>
-            <p className="text-white/40 text-xl font-medium leading-relaxed mb-10">
-              Websites that mean business. Ready for the world. Premium quality, delivered in days.
-            </p>
-            <div className="flex gap-6 mt-2">
-              <a href="#" className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center hover:bg-roselle-gold hover:text-white transition-all"><Twitter size={24} /></a>
-              <a href="#" className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center hover:bg-roselle-gold hover:text-white transition-all"><Linkedin size={24} /></a>
-            </div>
-          </div>
+  const [openSection, setOpenSection] = useState<string | null>(null);
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-20">
-            <div className="space-y-8">
+  const toggle = (section: string) => {
+    setOpenSection(prev => prev === section ? null : section);
+  };
+
+  return (
+    <footer className="bg-roselle-near-black text-roselle-cream pt-20 pb-12 px-6 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto relative z-10">
+        
+        {/* Brand block */}
+        <div className="mb-12 max-w-sm">
+          <div className="flex items-baseline space-x-1 font-display text-3xl font-bold tracking-tighter mb-5">
+            <span className="text-white">ROSELLE</span>
+            <span className="text-roselle-gold">STUDIO</span>
+          </div>
+          <p className="text-white/40 text-base font-medium leading-relaxed mb-6">
+            Websites that mean business. Ready for the world. Premium quality, delivered in days.
+          </p>
+          <div className="flex gap-4">
+            <a href="https://x.com/rosellestudio" target="_blank" className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center hover:bg-roselle-gold hover:text-white transition-all"><Twitter size={18} /></a>
+            <a href="https://linkedin.com/company/rosellestudio" target="_blank" className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center hover:bg-roselle-gold hover:text-white transition-all"><Linkedin size={18} /></a>
+          </div>
+        </div>
+
+        {/* Nav links — accordion on mobile, side by side on desktop */}
+        <div className="border-t border-white/5 md:border-none">
+          
+          {/* Desktop layout */}
+          <div className="hidden md:grid md:grid-cols-2 gap-16 mb-16">
+            <div className="space-y-6">
               <h4 className="text-roselle-gold text-xs font-black uppercase tracking-[0.3em]">Navigation</h4>
-              <ul className="space-y-5 text-xl font-bold text-white/50">
+              <ul className="space-y-4 text-base font-bold text-white/50">
                 <li><a href="#build" className="hover:text-white transition-colors">What We Build</a></li>
                 <li><a href="#live" className="hover:text-white transition-colors">Live Showcase</a></li>
                 <li><a href="#how" className="hover:text-white transition-colors">How It Works</a></li>
                 <li><a href="#contact" className="hover:text-white transition-colors">Contact</a></li>
               </ul>
             </div>
-            <div className="space-y-8">
+            <div className="space-y-6">
               <h4 className="text-roselle-gold text-xs font-black uppercase tracking-[0.3em]">Connect</h4>
-              <ul className="space-y-5 text-xl font-bold text-white/50">
+              <ul className="space-y-4 text-base font-bold text-white/50">
                 <li><a href="mailto:hello.rosellestudio@gmail.com" className="hover:text-white transition-colors break-all">hello.rosellestudio@gmail.com</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Lagos, Nigeria</a></li>
+                <li><span className="text-white/30">Lagos, Nigeria</span></li>
               </ul>
             </div>
           </div>
+
+          {/* Mobile accordion */}
+          <div className="md:hidden">
+            {[
+              { key: "nav", label: "Navigation", links: [
+                { href: "#build", text: "What We Build" },
+                { href: "#live", text: "Live Showcase" },
+                { href: "#how", text: "How It Works" },
+                { href: "#contact", text: "Contact" },
+              ]},
+              { key: "connect", label: "Connect", links: [
+                { href: "mailto:hello.rosellestudio@gmail.com", text: "hello.rosellestudio@gmail.com" },
+                { href: "#", text: "Lagos, Nigeria" },
+              ]},
+            ].map(section => (
+              <div key={section.key} className="border-b border-white/5">
+                <button
+                  onClick={() => toggle(section.key)}
+                  className="w-full flex justify-between items-center py-4 text-left"
+                >
+                  <span className="text-roselle-gold text-xs font-black uppercase tracking-[0.3em]">{section.label}</span>
+                  <span className={cn("text-white/30 transition-transform text-lg", openSection === section.key ? "rotate-45" : "")}>+</span>
+                </button>
+                <AnimatePresence>
+                  {openSection === section.key && (
+                    <motion.ul
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.25 }}
+                      className="overflow-hidden space-y-4 pb-4"
+                    >
+                      {section.links.map(link => (
+                        <li key={link.text}>
+                          <a href={link.href} className="text-white/50 font-bold hover:text-white transition-colors text-sm break-all">
+                            {link.text}
+                          </a>
+                        </li>
+                      ))}
+                    </motion.ul>
+                  )}
+                </AnimatePresence>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="border-t border-white/5 pt-16 flex flex-col md:flex-row justify-between items-center gap-10 text-base font-bold text-white/20">
-          <p>© 2025 Roselle Studio. All rights reserved.</p>
-          <div className="flex items-center gap-6">
+        <div className="border-t border-white/5 pt-8 mt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm font-bold text-white/20">
+          <p>© 2026 Roselle Studio. All rights reserved.</p>
+          <div className="flex items-center gap-4">
             <a href="#" className="hover:text-white">Privacy</a>
             <a href="#" className="hover:text-white">Terms</a>
-            <span className="w-1.5 h-1.5 bg-roselle-gold rounded-full" />
-            <p className="flex items-center gap-2"> <span className="text-roselle-gold">🌺</span></p>
+            <span className="text-roselle-gold">🌺</span>
           </div>
         </div>
       </div>
